@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>English at the Movies!</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <!-- Google Fonts: Montserrat & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Montserrat', 'sans-serif'],
+          },
+          colors: {
+            cinema: {
+              gold: '#E5A93C',
+              red: '#E50914',
+              dark: '#0B0F19',
+              card: '#151C2C',
+              hover: '#1E293B'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar for Cinematic feel */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0B0F19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #E5A93C;
+    }
+
+    /* Subtle glowing animation for featured elements */
+    .gold-glow {
+      box-shadow: 0 0 25px -5px rgba(229, 169, 60, 0.3);
+    }
+    .red-glow {
+      box-shadow: 0 0 25px -5px rgba(229, 9, 20, 0.4);
+    }
+    .card-zoom:hover img {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="h-full font-sans antialiased flex flex-col justify-between selection:bg-amber-500 selection:text-slate-900">
+
+  <!-- TOP NAVBAR -->
+  <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3 transition-all duration-300">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <!-- Logo & Title -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('gallery')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg">
+          <i class="fa-solid fa-film"></i>
+        </div>
+        <div>
+          <h1 class="font-display font-black text-xl lg:text-2xl tracking-tight bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 bg-clip-text text-transparent">
+            English with James - Movie Time!
+          </h1>
+          <p class="text-xs text-slate-400 font-medium">Interactive Video Learning Classroom</p>
+        </div>
+      </div>
+
+      <!-- Navigation & Controls -->
+      <div class="flex items-center gap-3">
+        <!-- Search bar -->
+        <div id="searchContainer" class="relative flex-1 md:w-64">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search title, genre, vocabulary..." 
+            onkeyup="filterShows()"
+            class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700/70 rounded-full text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+          >
+        </div>
+
+        <!-- Home View Button -->
+        <button 
+          onclick="showPage('gallery')" 
+          class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold rounded-full flex items-center gap-2 border border-slate-700 transition"
+        >
+          <i class="fa-solid fa-grid-2"></i>
+          <span>Library</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- PAGE 1: GALLERY VIEW -->
+    <section id="galleryView" class="space-y-6">
+      
+      <!-- HERO BANNER -->
+      <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800/80 p-6 sm:p-10 shadow-2xl">
+        <div class="absolute right-0 top-0 bottom-0 w-1/2 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none"></div>
+        <div class="max-w-2xl relative z-10 space-y-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider">
+            <i class="fa-solid fa-graduation-cap"></i> Interactive ESL Hub
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+            Learn Authentic English Through TV Shows
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Select a show below to play local scenes, study key vocabulary, discuss thematic topics, and access YouTube subtitles for listening practice.
+          </p>
+        </div>
+        
+        <!-- Filter Tabs -->
+        <div class="mt-6 flex flex-wrap gap-2 pt-4 border-t border-slate-800/60" id="genreFilters">
+          <button onclick="filterGenre('all')" class="genre-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition">All Shows (10)</button>
+          <button onclick="filterGenre('Drama')" class="genre-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-slate-100 hover:bg-slate-800 border border-slate-800 transition">Drama</button>
+          <button onclick="filterGenre('Comedy')" class="genre-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-slate-100 hover:bg-slate-800 border border-slate-800 transition">Comedy</button>
+          <button onclick="filterGenre('Sci-Fi')" class="genre-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-slate-100 hover:bg-slate-800 border border-slate-800 transition">Sci-Fi / Fantasy</button>
+          <button onclick="filterGenre('Action')" class="genre-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-slate-400 hover:text-slate-100 hover:bg-slate-800 border border-slate-800 transition">Action / Thriller</button>
+        </div>
+      </div>
+
+      <!-- SHOWS GRID -->
+      <div id="showsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Show cards injected dynamically by JavaScript -->
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="noResults" class="hidden text-center py-16 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800">
+        <i class="fa-solid fa-clapperboard text-4xl text-slate-600 mb-3"></i>
+        <p class="text-slate-400 font-medium">No TV shows match your search criteria.</p>
+        <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-slate-800 text-amber-400 text-xs font-semibold rounded-lg hover:bg-slate-700">Clear Search Filters</button>
+      </div>
+    </section>
+
+    <!-- PAGE 2: INDIVIDUAL SHOW DETAIL VIEW -->
+    <section id="detailView" class="hidden space-y-6 animate-fadeIn">
+      
+      <!-- TOP NAVIGATION BAR FOR SHOW PAGE -->
+      <div class="flex items-center justify-between bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+        <button 
+          onclick="showPage('gallery')" 
+          class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 text-sm font-semibold rounded-lg flex items-center gap-2 border border-slate-700 transition"
+        >
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to TV Shows</span>
+        </button>
+
+        <!-- Previous / Next Navigation -->
+        <div class="flex items-center gap-2">
+          <button id="prevShowBtn" onclick="navigateShow(-1)" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition" title="Previous Show">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <span id="showCounter" class="text-xs font-bold text-slate-400 px-2">Show 1 of 10</span>
+          <button id="nextShowBtn" onclick="navigateShow(1)" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition" title="Next Show">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN SHOW DETAILS LAYOUT -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- LEFT COLUMN: LOCAL VIDEO PLAYER & PRIMARY ACTIONS (8 cols) -->
+        <div class="lg:col-span-7 xl:col-span-8 space-y-6">
+          
+          <!-- VIDEO CONTAINER -->
+          <div class="relative bg-black rounded-2xl overflow-hidden border border-slate-800 shadow-2xl group">
+            
+            <video 
+              id="localVideoPlayer" 
+              controls 
+              preload="metadata"
+              class="w-full aspect-video object-contain bg-black"
+            >
+              <source id="videoSource" src="" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+
+            <!-- Video Status / File Helper Banner -->
+            <div id="videoFileNotice" class="bg-slate-900/90 border-t border-slate-800 p-3 text-xs text-slate-400 flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-folder-open text-amber-500"></i>
+                <span>File target: <code id="videoFileName" class="text-amber-300 font-mono">--</code></span>
+              </span>
+              <span class="text-slate-500 italic">Expected in local git root</span>
+            </div>
+          </div>
+
+          <!-- YOUTUBE SUBTITLE CTA BANNER -->
+          <div class="bg-gradient-to-r from-red-950/40 via-slate-900 to-slate-900 p-5 rounded-2xl border border-red-900/40 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-full bg-red-600/20 text-red-500 border border-red-500/30 flex items-center justify-center text-xl shrink-0">
+                <i class="fa-brands fa-youtube"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-base">Need Captions or Subtitles?</h4>
+                <p class="text-xs text-slate-300">Open the clip on YouTube to toggle interactive English subtitles or change playback speed.</p>
+              </div>
+            </div>
+
+            <a 
+              id="youtubeLinkBtn" 
+              href="#" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="shrink-0 px-5 py-3 bg-red-600 hover:bg-red-500 text-white font-bold text-sm rounded-xl flex items-center gap-2 shadow-lg shadow-red-600/20 transition transform hover:-translate-y-0.5"
+            >
+              <span>Watch on YouTube</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          </div>
+
+          <!-- ENGLISH LEARNING HIGHLIGHTS BOX -->
+          <div class="bg-slate-900/70 p-6 rounded-2xl border border-slate-800/80 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 class="font-display font-bold text-lg text-amber-400 flex items-center gap-2">
+                <i class="fa-solid fa-spell-check"></i> Vocabulary Spotlight & Expressions
+              </h3>
+              <span class="text-xs text-slate-500 uppercase font-semibold">ESL Lesson Focus</span>
+            </div>
+            
+            <div id="vocabList" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: SYNOPSIS & LEARNING DISCUSSION (5 cols) -->
+        <div class="lg:col-span-5 xl:col-span-4 space-y-6">
+          
+          <!-- SHOW HEADER CARD -->
+          <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span id="detailGenre" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-2">
+                  Genre
+                </span>
+                <h2 id="detailTitle" class="text-2xl font-display font-black text-white tracking-tight">Show Title</h2>
+              </div>
+            </div>
+
+            <p id="detailSynopsis" class="text-slate-300 text-sm leading-relaxed border-t border-slate-800/80 pt-4">
+              Synopsis detailed text...
+            </p>
+          </div>
+
+          <!-- DISCUSSION QUESTIONS CARD FOR TEACHERS -->
+          <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 space-y-4">
+            <h4 class="font-display font-bold text-base text-slate-200 flex items-center gap-2">
+              <i class="fa-solid fa-comments text-amber-400"></i> Conversation Prompts
+            </h4>
+            <p class="text-xs text-slate-400">Use these questions during or after watching the clip with your student:</p>
+            
+            <ul id="discussionPoints" class="space-y-2.5 text-xs text-slate-300">
+              <!-- Injected by JS -->
+            </ul>
+          </div>
+
+          <!-- TEACHING TIPS QUICK BOX -->
+          <div class="bg-gradient-to-br from-slate-900 to-slate-950 p-5 rounded-2xl border border-slate-800 text-xs text-slate-400 space-y-2">
+            <div class="font-bold text-amber-400 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb"></i> Quick Teaching Tip
+            </div>
+            <p>Play the clip locally once without subtitles to train listening comprehension, then click the YouTube button if the student needs to analyze exact speech patterns or accents.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>Non-Commercial Private Use Only - Do Not Distribute</p>
+      <p class="flex items-center gap-1 text-slate-400">
+        <i class="fa-solid fa-folder text-amber-500"></i> For your enjoyment!
+      </p>
+    </div>
+  </footer>
+
+  <!-- DATA & APP LOGIC -->
+  <script>
+    // TV Shows Database with local mp3/mp4 links, YouTube links, synopses, and educational content
+    const showsData = [
+      {
+        id: "breaking-bad",
+        title: "Breaking Bad",
+        file: "breaking.mp4",
+        youtube: "https://www.youtube.com/watch?v=T3x1tzOuXbQ",
+        genre: "Drama",
+        posterBg: "from-emerald-950 via-slate-900 to-black",
+        tagline: "Chemistry, choices, and consequences.",
+        synopsis: "Walter White, a struggling high school chemistry teacher diagnosed with inoperable lung cancer, turns to a life of crime by producing and selling methamphetamine with a former student, Jesse Pinkman, to secure his family's financial future.",
+        vocab: [
+          { word: "Diagnosis (n.)", def: "Identification of the nature of an illness." },
+          { word: "Partner in crime (idiom)", def: "A person who helps you commit a crime or do something mischievous." },
+          { word: "Desperate measures", def: "Actions taken in an extreme situation." }
+        ],
+        discussion: [
+          "What would you do if you were faced with an extreme life situation?",
+          "How does Walter's personality change from the beginning of the story?"
+        ]
+      },
+      {
+        id: "the-office",
+        title: "The Office",
+        file: "office.mp4",
+        youtube: "https://www.youtube.com/watch?v=afHQE1LlAfo",
+        genre: "Comedy",
+        posterBg: "from-blue-950 via-slate-900 to-black",
+        tagline: "Workplace humor and everyday conversational English.",
+        synopsis: "A mockumentary on a group of typical office workers at Dunder Mifflin Paper Company in Scranton, Pennsylvania, where the hilarious mismanagements of regional manager Michael Scott keep everyone on their toes.",
+        vocab: [
+          { word: "Mockumentary (n.)", def: "A fictional film/show structured as a documentary." },
+          { word: "Small talk (n.)", def: "Polite, casual conversation about unimportant matters." },
+          { word: "Prank (n./v.)", def: "A playful trick or practical joke." }
+        ],
+        discussion: [
+          "Describe your ideal workplace environment.",
+          "What makes American workplace humor different from humor in your native language?"
+        ]
+      },
+      {
+        id: "game-of-thrones",
+        title: "Game of Thrones",
+        file: "got.mp4",
+        youtube: "https://www.youtube.com/watch?v=TqsMx8rTSPg",
+        genre: "Sci-Fi",
+        posterBg: "from-slate-900 via-sky-950 to-black",
+        tagline: "Epic fantasy, formal speech, and political intrigue.",
+        synopsis: "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia. Excellent for practicing elevated, formal, and dramatic English syntax.",
+        vocab: [
+          { word: "Alliance (n.)", def: "A union or association formed for mutual benefit." },
+          { word: "Oath (n.)", def: "A solemn promise regarding one's actions or behavior." },
+          { word: "Betrayal (n.)", def: "An act of deliberate disloyalty." }
+        ],
+        discussion: [
+          "Which character showed the most loyalty?",
+          "How does the formal English accent in Game of Thrones compare to modern spoken English?"
+        ]
+      },
+      {
+        id: "stranger-things",
+        title: "Stranger Things",
+        file: "stranger.mp4",
+        youtube: "https://www.youtube.com/watch?v=mnd7sFt5c3A",
+        genre: "Sci-Fi",
+        posterBg: "from-red-950 via-slate-900 to-black",
+        tagline: "80s nostalgia, supernatural mystery, and youth slang.",
+        synopsis: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl with telepathic abilities.",
+        vocab: [
+          { word: "Supernatural (adj.)", def: "Manifestations or events attributed to forces beyond scientific understanding." },
+          { word: "Turn upside down (idiom)", def: "To cause great confusion, change, or disorder." },
+          { word: "Vanishes into thin air", def: "Disappears completely without a trace." }
+        ],
+        discussion: [
+          "What 80s cultural elements did you notice in the scene?",
+          "How do young teenagers speak differently from adults in this clip?"
+        ]
+      },
+      {
+        id: "the-boys",
+        title: "The Boys",
+        file: "theboys.mp4",
+        youtube: "https://www.youtube.com/watch?v=M1bhOaLW4FU",
+        genre: "Action",
+        posterBg: "from-yellow-950 via-slate-900 to-black",
+        tagline: "Dark satire, fast-paced dialogue, and modern slang.",
+        synopsis: "A fun and irreverent take on what happens when superheroes abuse their superpowers rather than use them for good. A group of vigilantes known as 'The Boys' embark on a heroic quest to expose the truth.",
+        vocab: [
+          { word: "Vigilante (n.)", def: "A person who undertakes law enforcement without legal authority." },
+          { word: "Corruption (n.)", def: "Dishonest or fraudulent conduct by those in power." },
+          { word: "Expose (v.)", def: "To reveal the true, objectionable nature of someone or something." }
+        ],
+        discussion: [
+          "What is the moral dilemma presented in this show?",
+          "Did you hear any fast-paced modern idioms?"
+        ]
+      },
+      {
+        id: "succession",
+        title: "Succession",
+        file: "succession.mp4",
+        youtube: "https://www.youtube.com/results?search_query=succession+official+trailer+hbo",
+        genre: "Drama",
+        posterBg: "from-amber-950 via-slate-900 to-black",
+        tagline: "Corporate English, high-stakes negotiation, and sarcasm.",
+        synopsis: "The Roy family is known for controlling the biggest media and entertainment company in the world. However, their world changes when their aging father steps down, sparking a brutal power struggle among his children.",
+        vocab: [
+          { word: "Succession (n.)", def: "The process of inheriting a title, office, or property." },
+          { word: "Hostile takeover", def: "The acquisition of a company by another against the wishes of management." },
+          { word: "Leverage (n./v.)", def: "Power to influence a person or situation." }
+        ],
+        discussion: [
+          "What corporate terms did you catch in this dialogue?",
+          "How do family members use subtle power moves when speaking?"
+        ]
+      },
+      {
+        id: "downton-abbey",
+        title: "Downton Abbey",
+        file: "downton.mp4",
+        youtube: "https://www.youtube.com/watch?v=tu3mP0c51hE",
+        genre: "Drama",
+        posterBg: "from-amber-900 via-stone-900 to-black",
+        tagline: "British Received Pronunciation (RP), etiquette, and history.",
+        synopsis: "A chronicle of the lives of the British aristocratic Crawley family and their domestic servants in the early 20th century. Perfect for practicing formal British pronunciation and polite etiquette phrasing.",
+        vocab: [
+          { word: "Aristocracy (n.)", def: "The highest class in certain societies, especially holding hereditary titles." },
+          { word: "Etiquette (n.)", def: "The customary code of polite behavior in society." },
+          { word: "Inheritance (n.)", def: "Money or property received from someone after their death." }
+        ],
+        discussion: [
+          "Notice the differences in British accent and vocabulary compared to American English.",
+          "What rules of politeness are emphasized in the scene?"
+        ]
+      },
+      {
+        id: "friends",
+        title: "Friends",
+        file: "friends.mp4",
+        youtube: "https://www.youtube.com/watch?v=UJHa8Bjjy1k",
+        genre: "Comedy",
+        posterBg: "from-purple-950 via-slate-900 to-black",
+        tagline: "Conversational English, dating idioms, and casual jokes.",
+        synopsis: "Follows the personal and professional lives of six twenty-to-thirty-something friends living in Manhattan, New York City. The ultimate show for learning natural American English idioms and social humor.",
+        vocab: [
+          { word: "Hit it off (idiom)", def: "To immediately form a good relationship with someone." },
+          { word: "Sarcasm (n.)", def: "The use of irony to mock or convey contempt." },
+          { word: "Crush on someone", def: "A brief and intense infatuation with someone." }
+        ],
+        discussion: [
+          "Which character's speaking style was easiest to understand?",
+          "Identify an idiom used in this scene and explain its meaning."
+        ]
+      },
+      {
+        id: "euphoria",
+        title: "Euphoria",
+        file: "euphoria.mp4",
+        youtube: "https://www.youtube.com/watch?v=UR4Pxgnm-GA",
+        genre: "Drama",
+        posterBg: "from-fuchsia-950 via-slate-900 to-black",
+        tagline: "Gen-Z slang, emotional vocabulary, and contemporary dialogue.",
+        synopsis: "A look at the lives of a group of high school students as they navigate love, friendships, secrets, and identity in a modern world. Useful for understanding contemporary teenage speech and Gen-Z expressions.",
+        vocab: [
+          { word: "Vibe (n./v.)", def: "The emotional atmosphere of a place, situation, or person." },
+          { word: "Relatable (adj.)", def: "Enabling a person to feel sympathy or identify with it." },
+          { word: "Cope with (v.)", def: "To deal effectively with something difficult." }
+        ],
+        discussion: [
+          "What modern slang words were used in the clip?",
+          "How does the tone of voice communicate the emotion of the characters?"
+        ]
+      },
+      {
+        id: "the-bear",
+        title: "The Bear",
+        file: "bear.mp4",
+        youtube: "https://www.youtube.com/watch?v=ojjCvICC86c",
+        genre: "Action",
+        posterBg: "from-sky-950 via-slate-900 to-black",
+        tagline: "High-stress kitchen terms, imperative verbs, and fast speech.",
+        synopsis: "A young, fine-dining chef comes home to Chicago to run his family's Italian beef sandwich shop after a tragic loss. High-intensity scenes filled with fast-paced food industry terminology and urgent communication.",
+        vocab: [
+          { word: "Chef (n.) / Yes, Chef!", def: "Professional cook; sign of respect and compliance in kitchens." },
+          { word: "Behind! / Corner!", def: "Crucial kitchen safety calls when moving fast with hot items." },
+          { word: "Under pressure (idiom)", def: "In a state of stress or urgent expectation." }
+        ],
+        discussion: [
+          "Why is clear, short communication essential in a high-stress environment?",
+          "Did you notice how imperative verbs (commands) are used rapidly in the kitchen?"
+        ]
+      }
+    ];
+
+    let currentShowIndex = 0;
+
+    // INITIALIZE APP
+    window.addEventListener('DOMContentLoaded', () => {
+      renderGrid(showsData);
+    });
+
+    // RENDER GALLERY SHOW CARDS
+    function renderGrid(shows) {
+      const gridContainer = document.getElementById('showsGrid');
+      const noResults = document.getElementById('noResults');
+
+      if (shows.length === 0) {
+        gridContainer.classList.add('hidden');
+        noResults.classList.remove('hidden');
+        return;
+      }
+
+      gridContainer.classList.remove('hidden');
+      noResults.classList.add('hidden');
+
+      gridContainer.innerHTML = shows.map((show) => {
+        const globalIndex = showsData.findIndex(s => s.id === show.id);
+        return `
+          <div 
+            onclick="openShowDetail(${globalIndex})" 
+            class="card-zoom group relative bg-slate-900 rounded-2xl border border-slate-800/80 overflow-hidden cursor-pointer transition-all duration-300 hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/5 flex flex-col justify-between"
+          >
+            <!-- Card Visual Banner -->
+            <div class="h-44 w-full bg-gradient-to-br ${show.posterBg} p-5 flex flex-col justify-between relative overflow-hidden">
+              <div class="absolute -right-6 -bottom-6 text-slate-800/20 text-8xl font-black select-none pointer-events-none">
+                <i class="fa-solid fa-play"></i>
+              </div>
+
+              <div class="flex items-center justify-between z-10">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 text-amber-400 border border-amber-500/30 backdrop-blur-sm">
+                  ${show.genre}
+                </span>
+                <span class="text-xs font-mono text-slate-400 bg-slate-950/50 px-2 py-0.5 rounded">
+                  ${show.file}
+                </span>
+              </div>
+
+              <div class="z-10">
+                <h3 class="font-display font-black text-xl text-white group-hover:text-amber-400 transition-colors">
+                  ${show.title}
+                </h3>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+              <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                ${show.tagline}
+              </p>
+
+              <!-- Footer Actions -->
+              <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+                <span class="text-amber-400 font-semibold group-hover:underline flex items-center gap-1">
+                  <i class="fa-solid fa-circle-play"></i> Open Page
+                </span>
+                <span class="text-slate-500 hover:text-red-400 flex items-center gap-1">
+                  <i class="fa-brands fa-youtube"></i> YouTube
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // SWITCH PAGE VIEWS (Gallery vs Individual Show Page)
+    function showPage(pageId) {
+      const galleryView = document.getElementById('galleryView');
+      const detailView = document.getElementById('detailView');
+      const searchContainer = document.getElementById('searchContainer');
+      const videoPlayer = document.getElementById('localVideoPlayer');
+
+      if (pageId === 'gallery') {
+        galleryView.classList.remove('hidden');
+        detailView.classList.add('hidden');
+        searchContainer.classList.remove('opacity-30', 'pointer-events-none');
+        // Pause video when leaving show page
+        if (videoPlayer) videoPlayer.pause();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (pageId === 'detail') {
+        galleryView.classList.add('hidden');
+        detailView.classList.remove('hidden');
+        searchContainer.classList.add('opacity-30', 'pointer-events-none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // OPEN INDIVIDUAL SHOW PAGE
+    function openShowDetail(index) {
+      currentShowIndex = index;
+      const show = showsData[index];
+
+      // Update Detail Content
+      document.getElementById('detailTitle').textContent = show.title;
+      document.getElementById('detailGenre').textContent = show.genre;
+      document.getElementById('detailSynopsis').textContent = show.synopsis;
+      document.getElementById('videoFileName').textContent = show.file;
+      document.getElementById('youtubeLinkBtn').href = show.youtube;
+      document.getElementById('showCounter').textContent = `Show ${index + 1} of ${showsData.length}`;
+
+      // Update Video Player Source
+      const videoPlayer = document.getElementById('localVideoPlayer');
+      const videoSource = document.getElementById('videoSource');
+      videoSource.src = show.file;
+      videoPlayer.load();
+
+      // Render Vocab
+      const vocabList = document.getElementById('vocabList');
+      vocabList.innerHTML = show.vocab.map(v => `
+        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+          <div class="font-bold text-amber-300 text-xs">${v.word}</div>
+          <div class="text-slate-400 text-xs mt-1 leading-snug">${v.def}</div>
+        </div>
+      `).join('');
+
+      // Render Discussion Points
+      const discussionPoints = document.getElementById('discussionPoints');
+      discussionPoints.innerHTML = show.discussion.map(dp => `
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-chevron-right text-amber-500 text-[10px] mt-1 shrink-0"></i>
+          <span>${dp}</span>
+        </li>
+      `).join('');
+
+      // Update Prev / Next Button States
+      document.getElementById('prevShowBtn').disabled = index === 0;
+      document.getElementById('nextShowBtn').disabled = index === showsData.length - 1;
+      document.getElementById('prevShowBtn').classList.toggle('opacity-40', index === 0);
+      document.getElementById('nextShowBtn').classList.toggle('opacity-40', index === showsData.length - 1);
+
+      showPage('detail');
+    }
+
+    // NAVIGATE NEXT / PREVIOUS SHOW
+    function navigateShow(direction) {
+      const newIndex = currentShowIndex + direction;
+      if (newIndex >= 0 && newIndex < showsData.length) {
+        openShowDetail(newIndex);
+      }
+    }
+
+    // FILTER SHOWS VIA SEARCH INPUT
+    function filterShows() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = showsData.filter(show => 
+        show.title.toLowerCase().includes(query) ||
+        show.genre.toLowerCase().includes(query) ||
+        show.synopsis.toLowerCase().includes(query) ||
+        show.vocab.some(v => v.word.toLowerCase().includes(query))
+      );
+      renderGrid(filtered);
+    }
+
+    // FILTER BY GENRE TAG BUTTONS
+    function filterGenre(genre) {
+      // Update UI active button style
+      const buttons = document.querySelectorAll('.genre-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-amber-500', 'text-slate-950');
+        btn.classList.add('bg-slate-900', 'text-slate-400', 'border', 'border-slate-800');
+      });
+
+      event.target.classList.remove('bg-slate-900', 'text-slate-400', 'border-slate-800');
+      event.target.classList.add('bg-amber-500', 'text-slate-950');
+
+      if (genre === 'all') {
+        renderGrid(showsData);
+      } else {
+        const filtered = showsData.filter(s => s.genre.toLowerCase() === genre.toLowerCase());
+        renderGrid(filtered);
+      }
+    }
+
+    // RESET ALL FILTERS
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      filterGenre('all');
+    }
+  </script>
+<footer class="site-footer">
+  <div class="footer-content">
+    <p>&copy; 2026 James Wynne</p>
+    <ul class="footer-links">
+      <li><a href="https://jwynne.wixsite.com/english" target="_blank" rel="noopener noreferrer">website</a></li>
+      <li><a href="mailto:james_wynne@hotmail.com">email</a></li>
+      <li><a href="https://wa.me/393515316723" target="_blank" rel="noopener noreferrer">whatsApp</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    font-size: 0.85rem; /* Small font size */
+    color: #666;
+    padding: 20px 0;
+    text-align: center;
+    border-top: 1px solid #eaeaea;
+    background-color: #f9f9f9;
+  }
+
+  .site-footer p {
+    margin: 0 0 10px 0;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .footer-links a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+</style>
+</body>
+</html>
