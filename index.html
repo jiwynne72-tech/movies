@@ -294,12 +294,15 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <p>Non-Commercial - Private Use Only - Do Not Distribute</p>
-      <p class="flex items-center gap-1 text-slate-400">
-        <i class="fa-solid fa-folder text-amber-500"></i> For your enjoyment!
-      </p>
+  <footer class="site-footer">
+    <div class="footer-content">
+      <img src="generic logo.jpg" alt="James Wynne - Linguistics & Writing Logo" class="footer-logo">
+      <p>&copy; 2026 James Wynne</p>
+      <ul class="footer-links">
+        <li><a href="https://jwynne.wixsite.com/english" target="_blank" rel="noopener noreferrer">website</a></li>
+        <li><a href="mailto:james_wynne@hotmail.com">email</a></li>
+        <li><a href="https://wa.me/393515316723" target="_blank" rel="noopener noreferrer">whatsApp</a></li>
+      </ul>
     </div>
   </footer>
 
@@ -683,49 +686,60 @@
       filterGenre('all');
     }
   </script>
-<footer class="site-footer">
-  <div class="footer-content">
-    <img src="genericlogo.jpg" alt="James Wynne - Linguistics & Writing Logo" class="footer-logo">
-    <p>&copy; 2026 James Wynne</p>
-    <ul class="footer-links">
-      <li><a href="https://jwynne.wixsite.com/english" target="_blank" rel="noopener noreferrer">website</a></li>
-      <li><a href="mailto:james_wynne@hotmail.com">email</a></li>
-      <li><a href="https://wa.me/393515316723" target="_blank" rel="noopener noreferrer">whatsApp</a></li>
-    </ul>
-  </div>
-</footer>
 
-<style>
-  .site-footer {
-    font-size: 0.85rem; /* Small font size */
-    color: #666;
-    padding: 20px 0;
-    text-align: center;
-    border-top: 1px solid #eaeaea;
-    background-color: #f9f9f9;
-  }
+  <style>
+    .site-footer {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      padding: 30px 20px;
+      text-align: center;
+      border-top: 1px solid #1e293b;
+      background-color: #020617;
+    }
 
-  .site-footer p {
-    margin: 0 0 10px 0;
-  }
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
 
-  .footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
+    .footer-logo {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
 
-  .footer-links a {
-    color: #0066cc;
-    text-decoration: none;
-  }
+    .site-footer p {
+      margin: 5px 0;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
 
-  .footer-links a:hover {
-    text-decoration: underline;
-  }
-</style>
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 5px 0 0 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
 </body>
 </html>
